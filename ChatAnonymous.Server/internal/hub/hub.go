@@ -21,3 +21,7 @@ func (h *Hub) GetRoom(uid string) *Room {
 	}
 	return room
 }
+
+func (h *Hub) RemoveRoom(uid string) {
+	delete(h.Rooms, uid)
+}
