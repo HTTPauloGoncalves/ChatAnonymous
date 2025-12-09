@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Anonymous Chat</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <span class="logo-text">Anonymous Chat</span>
+        </div>
+    </header>
+
+    <div class="container">       
+        <div class="content">
+            <h1>Converse anonimamente em segundos.</h1>
+            <p class="subtitle">Salas expiram automaticamente. Nenhuma mensagem é armazenada.</p>
+            
+            <div class="buttons">
+                <button class="btn" onclick="criarChat()">Criar chat</button>
+                <button class="btn" onclick="entrarChat()">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 ChatAnonymous — Open Source sob licença MIT.
+    </div>
+
+    <button class="expand-btn" onclick="expandir()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+        </svg>
+    </button>
+
+    <script>
+
+        /* ------------------------------------------
+                CRIAR NOVA SALA (POST /newroom)
+        -------------------------------------------*/
+        async function criarChat() {
+            try {
+                const response = await fetch("http://127.0.0.1:8080/newroom", { method: "POST" });
+
+                if (!response.ok) {
+                    alert("Erro ao criar sala.");
+                    return;
+                }
+
+                const data = await response.json();
+
+                const room = data.roomUUID;
+                const password = data.password;
+
+                // Redirecionar para o chat real
+                window.location.href = `./chat.html?room=${room}&password=${password}`;
+
+
+            } catch (err) {
+                console.error(err);
+                alert("Erro ao conectar ao servidor.");
+            }
+        }
+
+        /* ------------------------------------------
+                ENTRAR EM SALA EXISTENTE
+        -------------------------------------------*/
+        function entrarChat() {
+            const room = prompt("ID da sala:");
+            if (!room) return;
+
+            const password = prompt("Senha da sala:");
+            if (!password) return;
+
+            // Redirecionar para o chat
+            window.location.href = `./chat.html?room=${room}&password=${password}`;
+        }
+
+        /* ------------------------------------------
+                MODO TELA CHEIA
+        -------------------------------------------*/
+        function expandir() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/internal/hub"
+	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/utils"
 	"github.com/gorilla/websocket"
 )
 
@@ -16,6 +17,11 @@ var upgrader = websocket.Upgrader{
 
 func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		utils.EnableCORS(w, r)
+
+		if r.Method == http.MethodOptions {
+			return
+		}
 
 		uidroom := r.URL.Query().Get("room")
 		password := r.URL.Query().Get("password")
@@ -31,14 +37,12 @@ func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 		}
 
 		room := h.GetRoom(uidroom)
-
 		if room == nil {
-			http.Error(w, "room not found", 400)
+			http.Error(w, "room not found", http.StatusNotFound)
 			return
 		}
 
 		conn, err := upgrader.Upgrade(w, r, nil)
-
 		if err != nil {
 			fmt.Println("Erro no upgrade:", err)
 			return
@@ -54,8 +58,10 @@ func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 				return
 			}
 
-			room.Broadcast <- msg
+			room.Broadcast <- hub.Message{
+				Conn: conn,
+				Data: msg,
+			}
 		}
-
 	}
 }

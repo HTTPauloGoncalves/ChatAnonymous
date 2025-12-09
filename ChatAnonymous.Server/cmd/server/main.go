@@ -17,42 +17,42 @@ func main() {
 }
 
 func serverRun() {
+
 	http.HandleFunc("/", home)
 	http.HandleFunc("/newroom", newRoom)
 	http.HandleFunc("/closeroom", closeRoom)
 	http.HandleFunc("/ws", websocket.WebsocketHandler(h))
 
 	fmt.Println("Servidor rodando em http://localhost:8080 ...")
-	if err := http.ListenAndServe("0.0.0.0:8080", nil); err != nil {
+	if err := http.ListenAndServe(":8080", nil); err != nil {
 		panic(err)
 	}
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
+	utils.EnableCORS(w, r)
 
-	if r.Method != http.MethodGet {
-		w.WriteHeader(http.StatusBadRequest)
+	if r.Method == http.MethodOptions {
 		return
 	}
 
-	msg := []byte("Welcome to Chat Anonymous")
-
-	w.WriteHeader(http.StatusOK)
-	_, err := w.Write(msg)
-
-	if err != nil {
-		fmt.Println("erro ao escrever resposta:", err)
-	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(`{"message":"API is running"}`))
 }
 
 func newRoom(w http.ResponseWriter, r *http.Request) {
+	utils.EnableCORS(w, r)
+
+	if r.Method == http.MethodOptions {
+		return
+	}
+
 	if r.Method != http.MethodPost {
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
 	uidroom, err := utils.NewUUID()
-
 	if err != nil {
 		panic("error creating room id")
 	}
@@ -63,7 +63,6 @@ func newRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room := hub.NewRoom(uidroom, uidpass)
-
 	h.AddNewRoom(uidroom, room)
 
 	go room.Run(h)
@@ -78,6 +77,12 @@ func newRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func closeRoom(w http.ResponseWriter, r *http.Request) {
+	utils.EnableCORS(w, r)
+
+	if r.Method == http.MethodOptions {
+		return
+	}
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
 		return
@@ -97,7 +102,6 @@ func closeRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room := h.GetRoom(roomUUID)
-
 	if room == nil {
 		http.Error(w, "room not found", http.StatusNotFound)
 		return
@@ -109,8 +113,6 @@ func closeRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room.Close <- true
-
-	w.Header().Set("Content-Type", "application/json")
 
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "room closed successfully",

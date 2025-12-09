@@ -12,8 +12,13 @@ type Room struct {
 	Clients   map[*websocket.Conn]bool
 	Join      chan *websocket.Conn
 	Leave     chan *websocket.Conn
-	Broadcast chan []byte
+	Broadcast chan Message
 	Close     chan bool
+}
+
+type Message struct {
+	Conn *websocket.Conn
+	Data []byte
 }
 
 func (r *Room) Run(h *Hub) {
@@ -28,7 +33,9 @@ func (r *Room) Run(h *Hub) {
 
 		case msg := <-r.Broadcast:
 			for client := range r.Clients {
-				client.WriteMessage(websocket.TextMessage, msg)
+				if client != msg.Conn {
+					client.WriteMessage(websocket.TextMessage, msg.Data)
+				}
 			}
 
 		case <-timer:
@@ -49,7 +56,7 @@ func NewRoom(id string, password string) *Room {
 		Clients:   make(map[*websocket.Conn]bool),
 		Join:      make(chan *websocket.Conn),
 		Leave:     make(chan *websocket.Conn),
-		Broadcast: make(chan []byte),
+		Broadcast: make(chan Message),
 		Close:     make(chan bool),
 	}
 }
