@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat - Anonymous Chat</title>
-    <link rel="stylesheet" href="chat.css"> <!-- Mantenha o CSS separado se quiser -->
+    <link rel="stylesheet" href="chat.css">
 </head>
 
 <body>
@@ -45,9 +45,6 @@ const PASSWORD = params.get("password");
 
 document.getElementById("room-title").innerText = "Sala #" + ROOM_ID;
 
-/* -------------------------------------------  
-        CONECTANDO AO SERVIDOR  
-------------------------------------------- */
 let ws = new WebSocket(`ws://localhost:8080/ws?room=${ROOM_ID}&password=${PASSWORD}`);
 
 ws.onopen = () => {
@@ -63,7 +60,6 @@ ws.onclose = () => {
     document.getElementById("room-users").innerText = "Desconectado";
 };
 
-/* RECEBENDO MENSAGENS DO SERVIDOR */
 ws.onmessage = (event) => {
     adicionarMensagem(event.data, false);
 };

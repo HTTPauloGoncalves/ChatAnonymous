@@ -44,10 +44,6 @@
     </button>
 
     <script>
-
-        /* ------------------------------------------
-                CRIAR NOVA SALA (POST /newroom)
-        -------------------------------------------*/
         async function criarChat() {
             try {
                 const response = await fetch("http://127.0.0.1:8080/newroom", { method: "POST" });
@@ -62,7 +58,6 @@
                 const room = data.roomUUID;
                 const password = data.password;
 
-                // Redirecionar para o chat real
                 window.location.href = `./chat.html?room=${room}&password=${password}`;
 
 
@@ -72,9 +67,6 @@
             }
         }
 
-        /* ------------------------------------------
-                ENTRAR EM SALA EXISTENTE
-        -------------------------------------------*/
         function entrarChat() {
             const room = prompt("ID da sala:");
             if (!room) return;
@@ -82,13 +74,9 @@
             const password = prompt("Senha da sala:");
             if (!password) return;
 
-            // Redirecionar para o chat
             window.location.href = `./chat.html?room=${room}&password=${password}`;
         }
 
-        /* ------------------------------------------
-                MODO TELA CHEIA
-        -------------------------------------------*/
         function expandir() {
             if (document.fullscreenElement) {
                 document.exitFullscreen();

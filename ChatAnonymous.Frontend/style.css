@@ -86,6 +86,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-size: medium;
 }
         .content {
             max-width: 800px;
