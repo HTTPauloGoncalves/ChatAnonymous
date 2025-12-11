@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Anonymous Chat</title>
+    <link rel="stylesheet" href="../css/chat.css">
+</head>
+
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chat-info">
+                <div class="status-indicator" id="status-indicator"></div>
+                <div>
+                    <div class="chat-title" id="room-title">Sala</div>
+                    <div class="chat-subtitle" id="room-users">Conectando...</div>
+                </div>
+            </div>
+
+            <div class="chat-actions">
+                <button class="action-btn" onclick="copiarLink()">Copiar Link</button>
+                <button class="action-btn danger" onclick="sairSala()">Sair</button>
+            </div>
+        </div>
+
+        <div class="messages-area" id="messages"></div>
+
+        <div class="input-area">
+            <input 
+                type="text" 
+                class="message-input" 
+                id="messageInput"
+                placeholder="Digite sua mensagem..."
+            >
+            <button class="send-btn" onclick="enviarMensagem()">Enviar</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <div class="modal-codnome" id="modalCodnome">
+        <div class="modal-codnome-head">
+            <h1 class="h1-codnome">Codinome</h1>
+            <h5 class="h2-codnome">Digite um codinome para te diferenciar</h5>
+        </div>
+
+        <div class="modal-codnome-bottom">
+            <div class="send-name">
+                <div class="input-name-div">
+                    <input class="input-name" id="codinomeInput" type="text" placeholder="Digite um codinome...">
+                </div>
+                <div class="button-name-div">
+                    <button class="button-random-name" type="button" onclick="nomeAleatorio()">Aleatório</button>
+                </div>
+            </div>
+            <button class="button-name" type="button" onclick="salvarCodinome()">Salvar</button>
+        </div>
+    </div>
+
+<script src="../js/chat.js"></script>
+</body>
+</html>

@@ -58,7 +58,7 @@
                 const room = data.roomUUID;
                 const password = data.password;
 
-                window.location.href = `./chat.html?room=${room}&password=${password}`;
+                window.location.href = `pages/chat/html/chat.html?room=${room}&password=${password}`;
 
 
             } catch (err) {
@@ -74,7 +74,7 @@
             const password = prompt("Senha da sala:");
             if (!password) return;
 
-            window.location.href = `./chat.html?room=${room}&password=${password}`;
+            window.location.href = `pages/chat/html/chat.html?room=${room}&password=${password}`;
         }
 
         function expandir() {
