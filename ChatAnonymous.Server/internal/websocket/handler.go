@@ -66,6 +66,7 @@ func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 			}
 
 			room.Broadcast <- hub.Message{
+				Conn: conn,
 				Data: &clientMsg,
 			}
 		}

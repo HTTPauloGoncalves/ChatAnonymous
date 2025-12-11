@@ -18,8 +18,8 @@ type Room struct {
 }
 
 type Message struct {
-	Conn *websocket.Conn `json:"-"`
-	Data *utils.Message  `json:"data"`
+	Conn *websocket.Conn
+	Data *utils.Message `json:"data"`
 }
 
 func (r *Room) Run(h *Hub) {
