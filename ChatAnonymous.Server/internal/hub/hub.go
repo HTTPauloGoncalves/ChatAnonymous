@@ -1,6 +1,9 @@
 package hub
 
+import "sync"
+
 type Hub struct {
+	mu    sync.RWMutex
 	Rooms map[string]*Room
 }
 
@@ -10,18 +13,28 @@ func NewHub() *Hub {
 	}
 }
 
-func (h *Hub) AddNewRoom(uid string, room *Room) {
+func (h *Hub) AddNewRoom(uid string, room *Room) bool {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	if _, exists := h.Rooms[uid]; exists {
+		return false
+	}
+
 	h.Rooms[uid] = room
+	return true
 }
 
 func (h *Hub) GetRoom(uid string) *Room {
-	room, exist := h.Rooms[uid]
-	if !exist {
-		return nil
-	}
-	return room
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+
+	return h.Rooms[uid]
 }
 
 func (h *Hub) RemoveRoom(uid string) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
 	delete(h.Rooms, uid)
 }

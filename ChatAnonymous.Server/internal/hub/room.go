@@ -3,6 +3,7 @@ package hub
 import (
 	"time"
 
+	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/utils"
 	"github.com/gorilla/websocket"
 )
 
@@ -17,8 +18,8 @@ type Room struct {
 }
 
 type Message struct {
-	Conn *websocket.Conn
-	Data []byte
+	Conn *websocket.Conn `json:"-"`
+	Data *utils.Message  `json:"data"`
 }
 
 func (r *Room) Run(h *Hub) {
@@ -34,7 +35,7 @@ func (r *Room) Run(h *Hub) {
 		case msg := <-r.Broadcast:
 			for client := range r.Clients {
 				if client != msg.Conn {
-					client.WriteMessage(websocket.TextMessage, msg.Data)
+					client.WriteJSON(msg)
 				}
 			}
 

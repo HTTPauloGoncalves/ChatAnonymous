@@ -32,13 +32,18 @@ func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 		}
 
 		if password == "" {
-			http.Error(w, "'password' parameter is mandatory", http.StatusForbidden)
+			http.Error(w, "'password' parameter is mandatory", http.StatusBadRequest)
 			return
 		}
 
 		room := h.GetRoom(uidroom)
 		if room == nil {
 			http.Error(w, "room not found", http.StatusNotFound)
+			return
+		}
+
+		if room.Password != password {
+			http.Error(w, "invalid password", http.StatusForbidden)
 			return
 		}
 
@@ -51,7 +56,9 @@ func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 		room.Join <- conn
 
 		for {
-			_, msg, err := conn.ReadMessage()
+			var clientMsg utils.Message
+
+			err := conn.ReadJSON(&clientMsg)
 			if err != nil {
 				room.Leave <- conn
 				conn.Close()
@@ -59,8 +66,7 @@ func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 			}
 
 			room.Broadcast <- hub.Message{
-				Conn: conn,
-				Data: msg,
+				Data: &clientMsg,
 			}
 		}
 	}
