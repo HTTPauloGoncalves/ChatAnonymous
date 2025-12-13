@@ -115,7 +115,7 @@ Gerencia o conjunto de salas vivas no servidor.
 
 ### **Room**
 
--   Lista de clientes\
+-   Lista de clientes
 -   Canais: `Join`, `Leave`, `Broadcast`
 -   Timer de expiração
 -   Encerramento seguro
