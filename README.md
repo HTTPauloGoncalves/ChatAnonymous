@@ -1,197 +1,193 @@
-🟣 ChatAnonymous — Chat Anônimo, Seguro e Minimalista
+# 🟣 ChatAnonymous --- Chat Anônimo, Seguro e Minimalista
 
-Bem-vindo ao ChatAnonymous, um chat em tempo real, simples, rápido e verdadeiramente anônimo.
-Sem contas. Sem histórico. Sem rastreamento. Sem armazenamento de mensagens.
-Cada sala existe apenas enquanto os usuários estão nela.
+O **ChatAnonymous** é um chat em tempo real que prioriza **privacidade,
+simplicidade e segurança**.\
+Sem contas. Sem histórico. Sem rastreamento.\
+Nenhuma mensagem é armazenada. Cada sala existe apenas enquanto houver
+usuários conectados.
 
-Construído em Go + WebSockets, com foco em:
+Construído em **Go + WebSockets**, o projeto foi desenhado para
+entregar:
 
-Segurança
+-   🔐 **Anonimato real**
+-   ⚡ **Baixa latência e alta performance**
+-   🧪 **UX suave e moderna**
+-   🧩 **Arquitetura limpa e escalável**
+-   🕳 **Zero rastros**
 
-Anonimato real
+------------------------------------------------------------------------
 
-Experiência fluida
+## 🚀 Funcionalidades Atuais
 
-Baixo consumo de recursos
+### 🟢 Conexão WebSocket em tempo real
 
-Zero rastros
+Mensagens instantâneas entre todos os usuários conectados à sala.
 
-🚀 Funcionalidades Atuais
-🟢 Conexão segura via WebSockets
+### 🟣 Salas temporárias protegidas por senha
 
-Comunicação em tempo real entre todos os usuários da sala.
+Acesso somente com **ID + password** gerados automaticamente.
 
-🟣 Salas temporárias protegidas por senha
+### 🔒 Nenhum armazenamento de mensagens
 
-Uma sala só existe se você tiver o link + password gerado na criação.
+O servidor não grava **nada**.\
+Ao recarregar a página, o conteúdo desaparece para sempre.
 
-🔒 Sem armazenamento de mensagens
+### 🧩 Codinome local
 
-Nada é salvo no servidor.
-Se recarregar a página, tudo desaparece.
+O nome do usuário é salvo *apenas no front* (via `localStorage`)
+garantindo anonimato.
 
-🧩 Codinome local (não enviado ao backend)
+### 👤 UI responsiva com mensagens estilizadas
 
-O nome do usuário é salvo somente no front-end via localStorage.
+Diferencia automaticamente o remetente dos demais usuários.
 
-👤 Mensagens diferenciadas entre remetente e outros usuários
+### 📩 Eventos do sistema
 
-Bolhas estilizadas para tornar o chat mais agradável.
+Exemplo:\
+\> *Um usuário saiu da sala*
 
-📩 Notificações internas do sistema
+### 🪟 Design moderno
 
-Ex.: “Um usuário saiu da sala”.
+Glassmorphism, animações suaves e interface minimalista.
 
-🟪 Estilo moderno
+------------------------------------------------------------------------
 
-Interface elegante com transições suaves, modo janela e efeitos blur.
+## 🛠️ Funcionalidades Avançadas (já implementadas)
 
-🛠️ Funcionalidades Avançadas — Implementadas recentemente
-🟤 1. Modal de prevenção de refresh
+### 🟤 Modal anti-refresh
 
-Impede recarregar a página acidentalmente e mostra aviso de perda de dados.
+Evita recarregamento acidental que causaria perda total da sessão.
 
-🟤 2. Mensagens do sistema com estilo próprio
+### 🟤 Mensagens do sistema com estilo próprio
 
-Ex.:
+Visual diferenciado e discreto.
 
-Alguém desconectou…
+### 🟤 Quebra de linha real nas mensagens
 
-🟤 3. Quebra de linha real nas mensagens
+Renderização correta de textos longos e multilinhas.
 
-Utilizando white-space: pre-wrap.
+### 🟤 Arquitetura com Client, Room e Hub
 
-🟤 4. Arquitetura otimizada com Client, Room e Hub
+Separação clara entre leitura, escrita, distribuição e gerenciamento.
 
-Separação profissional entre leitura, escrita e distribuição de mensagens.
+------------------------------------------------------------------------
 
-🔮 Próximas Funcionalidades (Roadmap)
+# 🔮 Roadmap --- Próximas Funcionalidades
 
-(já incluídas aqui como forma oficial do projeto)
+## 🛡️ Segurança & Anti-Abuso
 
-🛡️ Segurança e Anti-Abuso
+-   Rate-limit anti-spam\
+-   Proteção contra XSS e mensagens malformadas\
+-   Sanitização automática no backend\
+-   UUID interno para clientes (sem expor ao front)
 
-Rate limit anti-spam (limitar X mensagens por segundo por usuário)
+## 💬 Experiência do Chat
 
-Proteção contra mensagens mal formatadas / XSS
+-   Indicador "Usuário está digitando..."\
+-   Scroll inteligente (somente desce se estiver no final)\
+-   Aviso de inatividade com contagem regressiva\
+-   Indicador de latência (ping/pong)
 
-Sanitização automática de JSON
+## 🧪 Usabilidade
 
-UUID interno por cliente (sem expor ao front)
+-   Short links do tipo `anon.chat/r/abc123`\
+-   Modal unificado para confirmações\
+-   Tema claro/escuro
 
-💬 Experiência de Chat
+## 🕵️ Modos de Uso
 
-“Usuário está digitando...” em tempo real
+-   Modo totalmente anônimo (Usuário 1, Usuário 2, etc.)\
+-   Salas permanentes opcionais\
+-   Matchmaking aleatório (modo Omegle seguro)
 
-Scroll inteligente (não empurra mensagens se usuário está lendo acima)
+## 📷 Extras opcionais
 
-Timer de inatividade com aviso para encerramento da sala
+-   Envio de imagens pequenas (base64 transitório, não persistido)\
+-   Emoji picker
 
-Indicador de latência (ping/pong WebSocket)
+------------------------------------------------------------------------
 
-🧪 Usabilidade
+# 🧱 Arquitetura do Projeto
 
-Suporte a short links: https://anon.chat/r/abc123
+### **Hub**
 
-Modal unificado para confirmação de ações
+Gerencia o conjunto de salas vivas no servidor.
 
-Tema claro/escuro (toggle no header)
+### **Room**
 
-🕵️ Modos de Uso
+-   Lista de clientes\
+-   Canais: `Join`, `Leave`, `Broadcast`\
+-   Timer de expiração\
+-   Encerramento seguro
 
-Modo totalmente anônimo: Usuário 1 / Usuário 2 / etc
+### **Client**
 
-Modo permanente: salas que não expiram automaticamente
+-   Conexão individual WebSocket\
+-   `ReadPump` e `WritePump` isolados\
+-   Buffer próprio para evitar travamentos no broadcast
 
-Matchmaking aleatório (entre em uma fila e conecte com outro usuário)
+### **Frontend**
 
-📷 Extras opcionais
+-   HTML/CSS com Glass Effect\
+-   WebSocket nativo\
+-   Modal de codinome\
+-   Modal anti-refresh\
+-   Animações + responsividade\
+-   Renderização das mensagens com bolhas estilizadas
 
-Envio de imagens pequenas (base64 transitório)
+------------------------------------------------------------------------
 
-Emojis aprimorados via picker nativo
+# 📦 Como rodar
 
-🧱 Arquitetura
-Hub
+## Backend (Go):
 
-Gerencia todas as salas existentes.
-
-Room
-
-lista de clientes
-
-canais de join/leave/broadcast
-
-timer de expiração
-
-controle de mensagens
-
-Client
-
-conexão WebSocket individual
-
-ReadPump() e WritePump() separados
-
-buffer próprio para evitar travar broadcast
-
-Frontend
-
-HTML/CSS minimalista com efeito glass
-
-WebSocket nativo
-
-modal de codinome
-
-modal anti-refresh
-
-gerenciamento local de nome
-
-renderização com animação de mensagens
-
-📦 Como rodar
-Backend (Go):
+``` bash
 go mod tidy
 go run ./cmd/server
+```
 
-Frontend:
+## Frontend:
 
-A pasta /public contém os arquivos HTML, CSS e JS.
-Basta abrir em localhost ou qualquer servidor estático simples.
+Arquivos na pasta `/public`.\
+Basta abrir um servidor estático simples ou usar `Live Server` no
+VSCode.
 
-🔐 Anonimato Real
+------------------------------------------------------------------------
 
-Este projeto segue o conceito de Zero Knowledge:
+# 🔐 Filosofia de Anonimato
 
-Nenhuma mensagem é armazenada
+O ChatAnonymous segue a ideia de **Zero Knowledge**:
 
-Nome do usuário é apenas no front-end
+-   Nenhuma mensagem é salva\
+-   Nome do usuário nunca vai para o backend\
+-   Nenhum log de conteúdo é registrado\
+-   Somente metadados mínimos para manter a sala funcionando\
+-   Salas expiram automaticamente
 
-Servidor não registra logs de conteúdo
+------------------------------------------------------------------------
 
-Apenas gerencia a conexão WebSocket
+# ❤️ Por que esse projeto existe?
 
-Salas expiram automaticamente
+Criado como uma alternativa segura e direta a mensageiros tradicionais,
+que apesar de criptografados, **mantêm metadados, números de telefone e
+histórico de conexões**.
 
-❤️ Por que este projeto existe?
+O ChatAnonymous é para quem quer:
 
-Para oferecer uma alternativa realmente segura, direta e sem rastros —
-diferente de mensageiros tradicionais como WhatsApp e Telegram, que ainda dependem de servidores que retêm metadados.
+-   ✔ Privacidade extrema\
+-   ✔ Comunicação efêmera\
+-   ✔ Zero dependência de empresas\
+-   ✔ Uma ferramenta simples e útil
 
-Este projeto preza por:
+------------------------------------------------------------------------
 
-✔ Liberdade
-✔ Privacidade
-✔ Simplicidade
-✔ Zero rastreamento
+# ⭐ Contribuições
 
-⭐ Contribuições
+Contribua com:
 
-Sinta-se livre para:
+-   Issues\
+-   Sugestões\
+-   Correções\
+-   Pull Requests
 
-abrir issues
-
-sugerir novas funções
-
-reportar bugs
-
-enviar PRs
+------------------------------------------------------------------------
