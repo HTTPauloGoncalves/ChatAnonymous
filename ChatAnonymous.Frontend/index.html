@@ -46,7 +46,7 @@
     <script>
         async function criarChat() {
             try {
-                const response = await fetch("http://127.0.0.1:8080/newroom", { method: "POST" });
+                const response = await fetch("http://192.168.0.109:8080/newroom", { method: "POST" });
 
                 if (!response.ok) {
                     alert("Erro ao criar sala.");

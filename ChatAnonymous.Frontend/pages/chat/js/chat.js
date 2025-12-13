@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("room-title").innerText = "Sala #" + ROOM_ID;
 
-    let ws = new WebSocket(`ws://localhost:8080/ws?room=${ROOM_ID}&password=${PASSWORD}`);
+    let ws = new WebSocket(`ws://192.168.0.109:8080/ws?room=${ROOM_ID}&password=${PASSWORD}`);
 
     ws.onopen = () => {
         document.getElementById("room-users").innerText = "Conectado";
@@ -250,6 +250,6 @@ function fecharModalClose() {
 
 function confirmarClose(){
     
-    window.location.href = "http://127.0.0.1:5500/ChatAnonymous.Frontend";
+    window.location.href = "http://192.168.0.109:5500/ChatAnonymous.Frontend";
 }
 
