@@ -3,39 +3,66 @@ package hub
 import (
 	"time"
 
-	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/utils"
 	"github.com/gorilla/websocket"
 )
 
 type Room struct {
 	Id        string
 	Password  string
-	Clients   map[*websocket.Conn]bool
-	Join      chan *websocket.Conn
-	Leave     chan *websocket.Conn
-	Broadcast chan Message
+	Clients   map[*Client]bool
+	Join      chan *Client
+	Leave     chan *Client
+	Broadcast chan BroadcastMessage
 	Close     chan bool
 }
 
-type Message struct {
-	Conn *websocket.Conn
-	Data *utils.Message `json:"data"`
+type BroadcastMessage struct {
+	Sender *Client
+	Data   []byte
+}
+
+func NewRoom(id, password string) *Room {
+	return &Room{
+		Id:        id,
+		Password:  password,
+		Clients:   make(map[*Client]bool),
+		Join:      make(chan *Client),
+		Leave:     make(chan *Client),
+		Broadcast: make(chan BroadcastMessage),
+		Close:     make(chan bool),
+	}
 }
 
 func (r *Room) Run(h *Hub) {
 	timer := time.After(1 * time.Hour)
+
 	for {
 		select {
-		case conn := <-r.Join:
-			r.Clients[conn] = true
+		case client := <-r.Join:
+			r.Clients[client] = true
 
-		case conn := <-r.Leave:
-			delete(r.Clients, conn)
+			systemMsg := []byte(`{"username":"System","message":"Um usuário entrou."}`)
+			r.broadcastSystem(systemMsg)
+
+		case client := <-r.Leave:
+			if _, ok := r.Clients[client]; ok {
+				delete(r.Clients, client)
+				close(client.Send)
+
+				systemMsg := []byte(`{"username":"System","message":"Um usuário saiu."}`)
+				r.broadcastSystem(systemMsg)
+			}
 
 		case msg := <-r.Broadcast:
 			for client := range r.Clients {
-				if client != msg.Conn {
-					client.WriteJSON(msg)
+				if client == msg.Sender {
+					continue
+				}
+				select {
+				case client.Send <- msg.Data:
+				default:
+					close(client.Send)
+					delete(r.Clients, client)
 				}
 			}
 
@@ -50,22 +77,16 @@ func (r *Room) Run(h *Hub) {
 	}
 }
 
-func NewRoom(id string, password string) *Room {
-	return &Room{
-		Id:        id,
-		Password:  password,
-		Clients:   make(map[*websocket.Conn]bool),
-		Join:      make(chan *websocket.Conn),
-		Leave:     make(chan *websocket.Conn),
-		Broadcast: make(chan Message),
-		Close:     make(chan bool),
+func (r *Room) broadcastSystem(msg []byte) {
+	for client := range r.Clients {
+		client.Send <- msg
 	}
 }
 
 func (r *Room) CloseRoom(h *Hub) {
 	for client := range r.Clients {
-		client.WriteMessage(websocket.TextMessage, []byte("Sala encerrada."))
-		client.Close()
+		client.Conn.WriteMessage(websocket.TextMessage, []byte("Sala encerrada."))
+		client.Conn.Close()
 	}
 
 	h.RemoveRoom(r.Id)
