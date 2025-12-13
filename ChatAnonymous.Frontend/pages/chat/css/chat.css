@@ -127,15 +127,28 @@ body {
 
 
         .action-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease; 
+}
+
+.action-btn.copied {
+    background: #f05ea7;     
+    border-color: #e72d8a;
+    color: white;
+    transform: scale(1.05);  
+    box-shadow: 0 0 12px #742fcf;
+}
+
+.action-btn.copied:hover{
+    background: #f05ea7;
+}
+
 
         .action-btn:hover {
             background: rgba(255, 255, 255, 0.2);
@@ -395,7 +408,6 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
-/* Fundo escurecido */
 .refresh-overlay {
     position: fixed;
     top: 0;
@@ -410,7 +422,6 @@ body {
     transition: opacity .25s ease-in-out;
 }
 
-/* Modal */
 .refresh-modal {
     position: fixed;
     top: 50%;

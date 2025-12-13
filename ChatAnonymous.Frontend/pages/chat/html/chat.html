@@ -19,7 +19,7 @@
             </div>
 
             <div class="chat-actions">
-                <button class="action-btn" onclick="copiarLink()">Copiar Link</button>
+                <button id="copyBtn" class="action-btn" onclick="copiarLink()">Copiar Link</button>
                 <button class="action-btn danger" onclick="sairSala()">Sair</button>
             </div>
         </div>
@@ -57,6 +57,8 @@
             <button class="button-name" type="button" onclick="salvarCodinome()">Salvar</button>
         </div>
     </div>
+
+
 <div class="refresh-overlay" id="refreshOverlay"></div>
 
 <div class="refresh-modal" id="refreshModal">
@@ -69,6 +71,19 @@
     <div class="refresh-buttons">
         <button class="refresh-btn cancel" onclick="fecharModalRefresh()">Cancelar</button>
         <button class="refresh-btn confirm" onclick="confirmarRefresh()">Atualizar</button>
+    </div>
+</div>
+
+<div class="refresh-modal" id="closeModal">
+    <h2 class="refresh-title">Deseja sair?</h2>
+
+    <p class="refresh-text">
+        Ao sair, você será desconectado da sala e todas as mensagens desaparecerão.
+    </p>
+
+    <div class="refresh-buttons">
+        <button class="refresh-btn cancel" onclick="fecharModalClose()">Cancelar</button>
+        <button class="refresh-btn confirm" onclick="confirmarClose()">Sair</button>
     </div>
 </div>
 <script src="../js/chat.js"></script>

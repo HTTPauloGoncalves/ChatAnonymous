@@ -205,3 +205,51 @@ document.addEventListener("keydown", function (e) {
     }
 });
 
+function copiarLink() {
+    const url = window.location.href;
+    const btn = document.getElementById("copyBtn");
+
+    navigator.clipboard.writeText(url).then(() => {
+        
+        btn.classList.add("copied");
+        btn.innerText = "Link Copiado!";
+
+        setTimeout(() => {
+            btn.classList.remove("copied");
+            btn.innerText = "Copiar Link";
+        }, 2000);
+    });
+}
+
+
+function sairSala(){
+    const overlay = document.getElementById("refreshOverlay");
+    const modal = document.getElementById("closeModal");
+
+    overlay.style.display = "block";
+    modal.style.display = "block";
+
+    setTimeout(() => {
+        overlay.classList.add("show");
+        modal.classList.add("show");
+    }, 10);
+}
+
+function fecharModalClose() {
+    const overlay = document.getElementById("refreshOverlay");
+    const modal = document.getElementById("closeModal");
+
+    overlay.classList.remove("show");
+    modal.classList.remove("show");
+
+    setTimeout(() => {
+        overlay.style.display = "none";
+        modal.style.display = "none";
+    }, 200);
+}
+
+function confirmarClose(){
+    
+    window.location.href = "http://127.0.0.1:5500/ChatAnonymous.Frontend";
+}
+
