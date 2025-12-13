@@ -1,8 +1,8 @@
-# 🟣 ChatAnonymous --- Chat Anônimo, Seguro e Minimalista
+# 🟣 ChatAnonymous - Chat Anônimo, Seguro e Minimalista
 
 O **ChatAnonymous** é um chat em tempo real que prioriza **privacidade,
-simplicidade e segurança**.\
-Sem contas. Sem histórico. Sem rastreamento.\
+simplicidade e segurança**.
+Sem contas. Sem histórico. Sem rastreamento.
 Nenhuma mensagem é armazenada. Cada sala existe apenas enquanto houver
 usuários conectados.
 
@@ -29,7 +29,7 @@ Acesso somente com **ID + password** gerados automaticamente.
 
 ### 🔒 Nenhum armazenamento de mensagens
 
-O servidor não grava **nada**.\
+O servidor não grava **nada**.
 Ao recarregar a página, o conteúdo desaparece para sempre.
 
 ### 🧩 Codinome local
@@ -43,8 +43,8 @@ Diferencia automaticamente o remetente dos demais usuários.
 
 ### 📩 Eventos do sistema
 
-Exemplo:\
-\> *Um usuário saiu da sala*
+Exemplo:
+ *Um usuário saiu da sala*
 
 ### 🪟 Design moderno
 
@@ -72,37 +72,37 @@ Separação clara entre leitura, escrita, distribuição e gerenciamento.
 
 ------------------------------------------------------------------------
 
-# 🔮 Roadmap --- Próximas Funcionalidades
+# 🔮 Roadmap - Próximas Funcionalidades
 
 ## 🛡️ Segurança & Anti-Abuso
 
--   Rate-limit anti-spam\
--   Proteção contra XSS e mensagens malformadas\
--   Sanitização automática no backend\
+-   Rate-limit anti-spam
+-   Proteção contra XSS e mensagens malformadas
+-   Sanitização automática no backend
 -   UUID interno para clientes (sem expor ao front)
 
 ## 💬 Experiência do Chat
 
--   Indicador "Usuário está digitando..."\
--   Scroll inteligente (somente desce se estiver no final)\
--   Aviso de inatividade com contagem regressiva\
+-   Indicador "Usuário está digitando..."
+-   Scroll inteligente (somente desce se estiver no final)
+-   Aviso de inatividade com contagem regressiva
 -   Indicador de latência (ping/pong)
 
 ## 🧪 Usabilidade
 
--   Short links do tipo `anon.chat/r/abc123`\
--   Modal unificado para confirmações\
+-   Short links do tipo `anon.chat/r/abc123`
+-   Modal unificado para confirmações
 -   Tema claro/escuro
 
 ## 🕵️ Modos de Uso
 
--   Modo totalmente anônimo (Usuário 1, Usuário 2, etc.)\
--   Salas permanentes opcionais\
+-   Modo totalmente anônimo (Usuário 1, Usuário 2, etc.)
+-   Salas permanentes opcionais
 -   Matchmaking aleatório (modo Omegle seguro)
 
 ## 📷 Extras opcionais
 
--   Envio de imagens pequenas (base64 transitório, não persistido)\
+-   Envio de imagens pequenas (base64 transitório, não persistido)
 -   Emoji picker
 
 ------------------------------------------------------------------------
@@ -116,23 +116,23 @@ Gerencia o conjunto de salas vivas no servidor.
 ### **Room**
 
 -   Lista de clientes\
--   Canais: `Join`, `Leave`, `Broadcast`\
--   Timer de expiração\
+-   Canais: `Join`, `Leave`, `Broadcast`
+-   Timer de expiração
 -   Encerramento seguro
 
 ### **Client**
 
--   Conexão individual WebSocket\
--   `ReadPump` e `WritePump` isolados\
+-   Conexão individual WebSocket
+-   `ReadPump` e `WritePump` isolados
 -   Buffer próprio para evitar travamentos no broadcast
 
 ### **Frontend**
 
--   HTML/CSS com Glass Effect\
--   WebSocket nativo\
--   Modal de codinome\
--   Modal anti-refresh\
--   Animações + responsividade\
+-   HTML/CSS com Glass Effect
+-   WebSocket nativo
+-   Modal de codinome
+-   Modal anti-refresh
+-   Animações + responsividade
 -   Renderização das mensagens com bolhas estilizadas
 
 ------------------------------------------------------------------------
@@ -158,10 +158,10 @@ VSCode.
 
 O ChatAnonymous segue a ideia de **Zero Knowledge**:
 
--   Nenhuma mensagem é salva\
--   Nome do usuário nunca vai para o backend\
--   Nenhum log de conteúdo é registrado\
--   Somente metadados mínimos para manter a sala funcionando\
+-   Nenhuma mensagem é salva
+-   Nome do usuário nunca vai para o backend
+-   Nenhum log de conteúdo é registrado
+-   Somente metadados mínimos para manter a sala funcionando
 -   Salas expiram automaticamente
 
 ------------------------------------------------------------------------
@@ -174,9 +174,9 @@ histórico de conexões**.
 
 O ChatAnonymous é para quem quer:
 
--   ✔ Privacidade extrema\
--   ✔ Comunicação efêmera\
--   ✔ Zero dependência de empresas\
+-   ✔ Privacidade extrema
+-   ✔ Comunicação efêmera
+-   ✔ Zero dependência de empresas
 -   ✔ Uma ferramenta simples e útil
 
 ------------------------------------------------------------------------
@@ -185,9 +185,9 @@ O ChatAnonymous é para quem quer:
 
 Contribua com:
 
--   Issues\
--   Sugestões\
--   Correções\
+-   Issues
+-   Sugestões
+-   Correções
 -   Pull Requests
 
 ------------------------------------------------------------------------
