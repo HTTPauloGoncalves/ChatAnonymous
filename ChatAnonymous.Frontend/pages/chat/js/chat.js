@@ -210,16 +210,18 @@ function copiarLink() {
     const btn = document.getElementById("copyBtn");
 
     navigator.clipboard.writeText(url).then(() => {
-        
         btn.classList.add("copied");
         btn.innerText = "Link Copiado!";
 
         setTimeout(() => {
             btn.classList.remove("copied");
             btn.innerText = "Copiar Link";
-        }, 2000);
+        }, 2000); 
+    }).catch(err => {
+        console.error("Falha ao copiar o link: ", err);
     });
 }
+
 
 
 function sairSala(){
