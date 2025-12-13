@@ -44,10 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const username = msg.username ?? msg.data?.username ?? "Anônimo";
     const message = msg.message ?? msg.data?.message;
 
-    if (message) {
-        adicionarMensagem(message, false, username);
+    if (!message) return;
+
+    if (username === "System") {
+        adicionarMensagemSistema(message);
+        return;
     }
+
+    adicionarMensagem(message, false, username);
 };
+
 
     document.getElementById("messageInput").addEventListener("keypress", e => {
         if (e.key === "Enter") enviarMensagem();
@@ -105,3 +111,97 @@ function adicionarMensagem(text, own, senderName) {
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
 }
+
+function saiuMensagem(text, own, senderName) {
+    const messages = document.getElementById("messages");
+    const div = document.createElement("div");
+    div.className = own ? "message own" : "message";
+
+    const time = new Date().toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    div.innerHTML = `
+        <div class="message-avatar">${senderName[0]}</div>
+        <div class="message-content">
+            <div class="message-sender">${senderName}</div>
+            <div class="message-bubble">${text}</div>
+            <div class="message-time">${time}</div>
+        </div>
+    `;
+
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function adicionarMensagemSistema(text) {
+    const messages = document.getElementById("messages");
+    const div = document.createElement("div");
+
+    div.className = "system-message";
+
+    div.innerHTML = `
+        <div class="system-text"><em>${text}</em></div>
+    `;
+
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function abrirModalRefresh() {
+    const overlay = document.getElementById("refreshOverlay");
+    const modal = document.getElementById("refreshModal");
+
+    overlay.style.display = "block";
+    modal.style.display = "block";
+
+    setTimeout(() => {
+        overlay.classList.add("show");
+        modal.classList.add("show");
+    }, 10);
+}
+
+function fecharModalRefresh() {
+    const overlay = document.getElementById("refreshOverlay");
+    const modal = document.getElementById("refreshModal");
+
+    overlay.classList.remove("show");
+    modal.classList.remove("show");
+
+    setTimeout(() => {
+        overlay.style.display = "none";
+        modal.style.display = "none";
+    }, 200);
+}
+
+function confirmarRefresh() {
+    window.location.reload();
+}
+
+document.addEventListener("keydown", function (e) {
+    if (e.key === "F5") {
+        e.preventDefault();
+        abrirModalRefresh();
+        return;
+    }
+
+    if (e.ctrlKey && e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        abrirModalRefresh();
+        return;
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        abrirModalRefresh();
+        return;
+    }
+
+    if (e.ctrlKey && e.key === "F5") {
+        e.preventDefault();
+        abrirModalRefresh();
+        return;
+    }
+});
+

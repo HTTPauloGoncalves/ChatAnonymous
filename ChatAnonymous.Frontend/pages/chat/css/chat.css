@@ -376,6 +376,115 @@ body {
             transform: translateY(0);
         }
 
+        .system-message {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    opacity: 0.8;
+    margin: 10px 0;
+}
+
+.system-text {
+    font-size: 14px;
+}
+
+.system-time {
+    font-size: 11px;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Fundo escurecido */
+.refresh-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    display: none;
+    z-index: 99998;
+    opacity: 0;
+    transition: opacity .25s ease-in-out;
+}
+
+/* Modal */
+.refresh-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%) scale(0.9);
+    background: #9d30b6;
+    color: white;
+    width: 320px;
+    padding: 24px;
+    border-radius: 14px;
+    display: none;
+    z-index: 99999;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0, 0, 0, .4);
+    opacity: 0;
+    transition: all .25s ease-in-out;
+}
+
+.refresh-modal.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.refresh-overlay.show {
+    opacity: 1;
+}
+
+.refresh-title {
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.refresh-text {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.refresh-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.refresh-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all .2s;
+}
+
+.refresh-btn.cancel {
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+.refresh-btn.cancel:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+.refresh-btn.confirm {
+    background: #ec4899;
+    color: white;
+}
+
+.refresh-btn.confirm:hover {
+    background: #db2777;
+}
+
+
+
         @media (max-width: 768px) {
             .chat-container {
                 padding: 10px;
