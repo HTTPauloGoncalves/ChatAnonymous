@@ -209,18 +209,39 @@ function copiarLink() {
     const url = window.location.href;
     const btn = document.getElementById("copyBtn");
 
-    navigator.clipboard.writeText(url).then(() => {
-        btn.classList.add("copied");
-        btn.innerText = "Link Copiado!";
-
-        setTimeout(() => {
-            btn.classList.remove("copied");
-            btn.innerText = "Copiar Link";
-        }, 2000); 
-    }).catch(err => {
-        console.error("Falha ao copiar o link: ", err);
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+            animarBotaoCopiado(btn);
+        }).catch(() => {
+            fallbackCopy(url, btn);
+        });
+    } 
+    else {
+        fallbackCopy(url, btn);
+    }
 }
+
+function fallbackCopy(text, btn) {
+    const input = document.createElement("input");
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+
+    animarBotaoCopiado(btn);
+}
+
+function animarBotaoCopiado(btn) {
+    btn.classList.add("copied");
+    btn.innerText = "Link Copiado!";
+
+    setTimeout(() => {
+        btn.classList.remove("copied");
+        btn.innerText = "Copiar Link";
+    }, 2000);
+}
+
 
 
 

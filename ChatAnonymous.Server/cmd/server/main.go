@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/internal/hub"
+	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/internal/middleware"
 	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/internal/websocket"
 	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/utils"
 )
@@ -18,31 +19,54 @@ func main() {
 
 func serverRun() {
 
-	http.HandleFunc("/", home)
-	http.HandleFunc("/newroom", newRoom)
-	http.HandleFunc("/closeroom", closeRoom)
-	http.HandleFunc("/ws", websocket.WebsocketHandler(h))
+	http.Handle(
+		"/",
+		middleware.Chain(
+			http.HandlerFunc(home),
+			middleware.EnableCORS(),
+			middleware.RateLimit(),
+		),
+	)
+
+	http.Handle(
+		"/newroom",
+		middleware.Chain(
+			http.HandlerFunc(newRoom),
+			middleware.EnableCORS(),
+			middleware.RateLimit(),
+		),
+	)
+
+	http.Handle(
+		"/closeroom",
+		middleware.Chain(
+			http.HandlerFunc(closeRoom),
+			middleware.EnableCORS(),
+			middleware.RateLimit(),
+		),
+	)
+
+	http.Handle(
+		"/ws",
+		middleware.Chain(
+			websocket.WebsocketHandler(h),
+			middleware.EnableCORS(),
+		),
+	)
 
 	fmt.Println("Servidor rodando em http://localhost:8080 ...")
+
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		panic(err)
 	}
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	utils.EnableCORS(w, r)
-
-	if r.Method == http.MethodOptions {
-		return
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"message":"API is running"}`))
 }
 
 func newRoom(w http.ResponseWriter, r *http.Request) {
-	utils.EnableCORS(w, r)
-
 	if r.Method == http.MethodOptions {
 		return
 	}
@@ -77,7 +101,6 @@ func newRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func closeRoom(w http.ResponseWriter, r *http.Request) {
-	utils.EnableCORS(w, r)
 
 	if r.Method == http.MethodOptions {
 		return

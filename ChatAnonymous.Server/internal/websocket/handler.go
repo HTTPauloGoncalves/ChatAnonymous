@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/internal/hub"
-	"github.com/HTTPauloGoncalves/ChatAnonymous/ChatAnonymous.Server/utils"
 	"github.com/gorilla/websocket"
 )
 
@@ -17,7 +16,6 @@ var upgrader = websocket.Upgrader{
 
 func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		utils.EnableCORS(w, r)
 
 		if r.Method == http.MethodOptions {
 			return
