@@ -49,8 +49,10 @@ func (r *Room) Run(h *Hub) {
 				delete(r.Clients, client)
 				close(client.Send)
 
-				systemMsg := []byte(`{"username":"System","message":"Um usuário saiu."}`)
-				r.broadcastSystem(systemMsg)
+				if len(r.Clients) <= 1 {
+					r.CloseRoom(h)
+					return
+				}
 			}
 
 		case msg := <-r.Broadcast:

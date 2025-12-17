@@ -1,6 +1,10 @@
+let ws = null;
+const params = new URLSearchParams(window.location.search);
+
 document.addEventListener("DOMContentLoaded", () => {
     const modalOverlay = document.getElementById("modalOverlay");
     const modalCodnome = document.getElementById("modalCodnome");
+    const isRandom = params.get("random") === "true";
 
     function abrirModal() {
         modalOverlay.style.display = "block";
@@ -21,38 +25,50 @@ document.addEventListener("DOMContentLoaded", () => {
         abrirModal();
     }
 
-    const params = new URLSearchParams(window.location.search);
     const ROOM_ID = params.get("room");
     const PASSWORD = params.get("password");
 
-    document.getElementById("room-title").innerText = "Sala #" + ROOM_ID;
+    if (isRandom) {
+        document.getElementById("room-title").innerText = "Chat Aleatório";
+        document.getElementById("copyBtn").style.display = "none";
 
-    let ws = new WebSocket(`ws://192.168.0.109:8080/ws?room=${ROOM_ID}&password=${PASSWORD}`);
+        ws = new WebSocket("ws://192.168.0.109:8080/ws/random");
 
-    ws.onopen = () => {
-        document.getElementById("room-users").innerText = "Conectado";
-    };
+        ws.onopen = () => {
+            document.getElementById("room-users").innerText = "Procurando alguém...";
+            ws.send(JSON.stringify({ type: "join_random" }));
+        };
+    } else {
+        document.getElementById("room-title").innerText = "Sala #" + ROOM_ID;
+
+        ws = new WebSocket(
+            `ws://192.168.0.109:8080/ws?room=${ROOM_ID}&password=${PASSWORD}`
+        );
+
+        ws.onopen = () => {
+            document.getElementById("room-users").innerText = "Conectado";
+        };
+    }
+
 
     ws.onclose = () => {
         document.getElementById("status-indicator").style.background = "#ef4444";
         document.getElementById("room-users").innerText = "Desconectado";
     };
 
-   ws.onmessage = (event) => {
-    const msg = JSON.parse(event.data);
+    ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
 
-    const username = msg.username ?? msg.data?.username ?? "Anônimo";
-    const message = msg.message ?? msg.data?.message;
+        if (msg.type === "system") {
+            adicionarMensagemSistema(msg.message);
+            return;
+        }
 
-    if (!message) return;
+        if (msg.type === "chat") {
+            adicionarMensagem(msg.message, false, msg.username);
+        }
+    };
 
-    if (username === "System") {
-        adicionarMensagemSistema(message);
-        return;
-    }
-
-    adicionarMensagem(message, false, username);
-};
 
 
     document.getElementById("messageInput").addEventListener("keypress", e => {
@@ -71,7 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        ws.send(JSON.stringify({ username: nomeAtual, message: text }));
+        ws.send(JSON.stringify({
+            type: "chat",
+            username: nomeAtual,
+            message: text
+        }));
+
         adicionarMensagem(text, true, nomeAtual);
         input.value = "";
     };
@@ -271,8 +292,10 @@ function fecharModalClose() {
     }, 200);
 }
 
-function confirmarClose(){
-    
-    window.location.href = "http://192.168.0.109:5500/ChatAnonymous.Frontend";
+function confirmarClose() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+    }
+    window.location.href = "/";
 }
 

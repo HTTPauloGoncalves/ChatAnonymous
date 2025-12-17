@@ -29,6 +29,14 @@ func serverRun() {
 	)
 
 	http.Handle(
+		"/ws/random",
+		middleware.Chain(
+			websocket.RandomWebsocketHandler(h),
+			middleware.EnableCORS(),
+		),
+	)
+
+	http.Handle(
 		"/newroom",
 		middleware.Chain(
 			http.HandlerFunc(newRoom),

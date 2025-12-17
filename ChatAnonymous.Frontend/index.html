@@ -25,7 +25,7 @@
             
             <div class="buttons">
                 <button class="btn" onclick="criarChat()">Criar chat</button>
-                <button class="btn" onclick="entrarChat()">Entrar</button>
+                <button class="btn" onclick="chatRandom()">Chat Aleatório</button>
             </div>
         </div>
     </div>
@@ -84,6 +84,11 @@
                 document.documentElement.requestFullscreen();
             }
         }
+
+        function chatRandom() {
+            window.location.href = "pages/chat/html/chat.html?random=true";
+        }
+
     </script>
 </body>
 </html>

@@ -3,13 +3,15 @@ package hub
 import "sync"
 
 type Hub struct {
-	mu    sync.RWMutex
-	Rooms map[string]*Room
+	mu          sync.RWMutex
+	Rooms       map[string]*Room
+	WaitingRoom []*Client
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		Rooms: make(map[string]*Room),
+		Rooms:       make(map[string]*Room),
+		WaitingRoom: make([]*Client, 0),
 	}
 }
 

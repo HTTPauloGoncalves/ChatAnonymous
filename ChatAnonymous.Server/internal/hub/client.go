@@ -9,11 +9,14 @@ type Client struct {
 	Conn *websocket.Conn
 	Send chan []byte
 	Room *Room
+	Hub  *Hub
 }
 
 func (c *Client) ReadPump() {
 	defer func() {
-		c.Room.Leave <- c
+		if c.Room != nil {
+			c.Room.Leave <- c
+		}
 		c.Conn.Close()
 	}()
 
@@ -25,12 +28,20 @@ func (c *Client) ReadPump() {
 			return
 		}
 
+		if incoming.Type == "join_random" {
+			c.Hub.JoinRandom(c)
+			continue
+		}
+
+		if c.Room == nil {
+			continue
+		}
+
 		encoded, _ := utils.EncodeMessage(&incoming)
 		c.Room.Broadcast <- BroadcastMessage{
 			Sender: c,
 			Data:   encoded,
 		}
-
 	}
 }
 

@@ -50,6 +50,7 @@ func WebsocketHandler(h *hub.Hub) http.HandlerFunc {
 			Conn: conn,
 			Send: make(chan []byte, 16),
 			Room: room,
+			Hub:  h,
 		}
 
 		room.Join <- client

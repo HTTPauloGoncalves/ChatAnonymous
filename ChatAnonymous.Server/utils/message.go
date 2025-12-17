@@ -3,6 +3,7 @@ package utils
 import "encoding/json"
 
 type Message struct {
+	Type     string `json:"type"`
 	Username string `json:"username"`
 	Message  string `json:"message"`
 }
