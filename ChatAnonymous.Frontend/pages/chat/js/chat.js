@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
         ws = new WebSocket("ws://192.168.0.109:8080/ws/random");
 
         ws.onopen = () => {
-            document.getElementById("room-users").innerText = "Procurando alguém...";
+            document.getElementById("room-users").innerText = "Procurando alguém";
+            document.getElementById("divloader").style.display = "block"
             ws.send(JSON.stringify({ type: "join_random" }));
         };
     } else {
@@ -47,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ws.onopen = () => {
             document.getElementById("room-users").innerText = "Conectado";
+            document.getElementById("divloader").style.display = "none"
         };
     }
 
@@ -56,18 +58,26 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("room-users").innerText = "Desconectado";
     };
 
-    ws.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
+   ws.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
 
-        if (msg.type === "system") {
-            adicionarMensagemSistema(msg.message);
-            return;
+    if (msg.type === "system") {
+
+        if (isRandom && msg.message === "Um usuário entrou.") {
+            console.log("davi fedido");
+            document.getElementById("room-users").innerText = "Conectado";
+            document.getElementById("divloader").style.display = "none";
         }
 
-        if (msg.type === "chat") {
-            adicionarMensagem(msg.message, false, msg.username);
-        }
-    };
+        adicionarMensagemSistema(msg.message);
+        return;
+    }
+
+    if (msg.type === "chat") {
+        adicionarMensagem(msg.message, false, msg.username);
+    }
+};
+
 
 
 
@@ -296,6 +306,6 @@ function confirmarClose() {
     if (ws && ws.readyState === WebSocket.OPEN) {
         ws.close();
     }
-    window.location.href = "/";
+    window.location.href = "/ChatAnonymous.Frontend";
 }
 

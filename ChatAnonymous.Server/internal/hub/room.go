@@ -41,18 +41,16 @@ func (r *Room) Run(h *Hub) {
 		case client := <-r.Join:
 			r.Clients[client] = true
 
-			systemMsg := []byte(`{"username":"System","message":"Um usuário entrou."}`)
+			systemMsg := []byte(`{"type":"system","message":"Um usuário entrou."}`)
 			r.broadcastSystem(systemMsg)
 
 		case client := <-r.Leave:
 			if _, ok := r.Clients[client]; ok {
+				systemMsg := []byte(`{"type":"system","message":"Um usuário saiu."}`)
+				r.broadcastSystem(systemMsg)
+
 				delete(r.Clients, client)
 				close(client.Send)
-
-				if len(r.Clients) <= 1 {
-					r.CloseRoom(h)
-					return
-				}
 			}
 
 		case msg := <-r.Broadcast:
