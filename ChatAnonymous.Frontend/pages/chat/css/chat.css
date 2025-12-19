@@ -526,6 +526,74 @@ body {
     background: #db2777;
 }
 
+.random-modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%) scale(0.9);
+    background: #9d30b6;
+    color: white;
+    width: 320px;
+    padding: 24px;
+    border-radius: 14px;
+    display: none;
+    z-index: 99999;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0, 0, 0, .4);
+    opacity: 0;
+    transition: all .25s ease-in-out;
+}
+
+.random-modal.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.random-title {
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.random-text {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.random-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.random-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all .2s;
+}
+
+.random-btn.cancel {
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+.random-btn.cancel:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+.random-btn.confirm {
+    background: #ec4899;
+    color: white;
+}
+
+.random-btn.confirm:hover {
+    background: #db2777;
+}
 
 
 /* ================================

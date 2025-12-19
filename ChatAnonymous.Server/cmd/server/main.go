@@ -94,7 +94,7 @@ func newRoom(w http.ResponseWriter, r *http.Request) {
 		panic("error creating password")
 	}
 
-	room := hub.NewRoom(uidroom, uidpass)
+	room := hub.NewRoom(uidroom, uidpass, false)
 	h.AddNewRoom(uidroom, room)
 
 	go room.Run(h)

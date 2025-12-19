@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ws.onclose = () => {
         document.getElementById("status-indicator").style.background = "#ef4444";
         document.getElementById("room-users").innerText = "Desconectado";
+        document.getElementById("divloader").style.display = "none";
     };
 
    ws.onmessage = (event) => {
@@ -64,9 +65,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (msg.type === "system") {
 
         if (isRandom && msg.message === "Um usuário entrou.") {
-            console.log("davi fedido");
             document.getElementById("room-users").innerText = "Conectado";
             document.getElementById("divloader").style.display = "none";
+        }
+
+        if (isRandom && msg.message === "Sala encerrada.") {
+            document.getElementById("status-indicator").style.background = "#ef4444";
+            document.getElementById("room-users").innerText = "Desconectado";
+            document.getElementById("divloader").style.display = "none";
+
+            proximoRandom()
         }
 
         adicionarMensagemSistema(msg.message);
@@ -307,5 +315,39 @@ function confirmarClose() {
         ws.close();
     }
     window.location.href = "/ChatAnonymous.Frontend";
+}
+
+function proximoRandom(){
+    const overlay = document.getElementById("refreshOverlay");
+    const modal = document.getElementById("nextRandomModal");
+
+    overlay.style.display = "block";
+    modal.style.display = "block";
+
+    setTimeout(() => {
+        overlay.classList.add("show");
+        modal.classList.add("show");
+    }, 10);
+}
+
+function fecharModalRandom() {
+    const overlay = document.getElementById("refreshOverlay");
+    const modal = document.getElementById("nextRandomModal");
+
+    overlay.classList.remove("show");
+    modal.classList.remove("show");
+
+    setTimeout(() => {
+        overlay.style.display = "none";
+        modal.style.display = "none";
+    }, 200);
+}
+
+function confirmarRandom(){
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+    }
+
+    window.location.href = "/ChatAnonymous.Frontend/pages/chat/html/chat.html?random=true";
 }
 
