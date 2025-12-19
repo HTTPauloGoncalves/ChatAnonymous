@@ -2,13 +2,12 @@ package hub
 
 import (
 	"time"
-
-	"github.com/gorilla/websocket"
 )
 
 type Room struct {
 	Id        string
 	Password  string
+	Random    bool
 	Clients   map[*Client]bool
 	Join      chan *Client
 	Leave     chan *Client
@@ -21,10 +20,11 @@ type BroadcastMessage struct {
 	Data   []byte
 }
 
-func NewRoom(id, password string) *Room {
+func NewRoom(id, password string, random bool) *Room {
 	return &Room{
 		Id:        id,
 		Password:  password,
+		Random:    random,
 		Clients:   make(map[*Client]bool),
 		Join:      make(chan *Client),
 		Leave:     make(chan *Client),
@@ -45,13 +45,20 @@ func (r *Room) Run(h *Hub) {
 			r.broadcastSystem(systemMsg)
 
 		case client := <-r.Leave:
-			if _, ok := r.Clients[client]; ok {
-				systemMsg := []byte(`{"type":"system","message":"Um usuário saiu."}`)
-				r.broadcastSystem(systemMsg)
 
-				delete(r.Clients, client)
-				close(client.Send)
+			if _, ok := r.Clients[client]; !ok {
+				continue
 			}
+
+			delete(r.Clients, client)
+			close(client.Send)
+
+			if r.Random {
+				r.CloseRoom(h)
+				return
+			}
+
+			r.broadcastSystem([]byte(`{"type":"system","message":"Um usuário saiu."}`))
 
 		case msg := <-r.Broadcast:
 			for client := range r.Clients {
@@ -79,14 +86,25 @@ func (r *Room) Run(h *Hub) {
 
 func (r *Room) broadcastSystem(msg []byte) {
 	for client := range r.Clients {
-		client.Send <- msg
+		select {
+		case client.Send <- msg:
+		default:
+		}
 	}
 }
 
 func (r *Room) CloseRoom(h *Hub) {
 	for client := range r.Clients {
-		client.Conn.WriteMessage(websocket.TextMessage, []byte("Sala encerrada."))
-		client.Conn.Close()
+		select {
+		case client.Send <- []byte(`{"type":"system","message":"Sala encerrada."}`):
+		default:
+		}
+
+		select {
+		case <-client.Send:
+		default:
+			close(client.Send)
+		}
 	}
 
 	h.RemoveRoom(r.Id)

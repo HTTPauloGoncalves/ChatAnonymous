@@ -21,7 +21,7 @@ func (h *Hub) JoinRandom(client *Client) {
 		h.WaitingRoom = h.WaitingRoom[1:]
 
 		roomID, _ := utils.NewUUID()
-		room := NewRoom(roomID, "")
+		room := NewRoom(roomID, "", true)
 		h.Rooms[roomID] = room
 
 		client.Room = room
