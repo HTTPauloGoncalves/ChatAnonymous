@@ -84,9 +84,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (msg.type === "chat") {
         adicionarMensagem(msg.message, false, msg.username);
     }
+
 };
 
-
+document.querySelector('emoji-picker')
+        .addEventListener('emoji-click', event => document.getElementById("messageInput").value += event.detail.emoji.unicode);
 
 
     document.getElementById("messageInput").addEventListener("keypress", e => {
