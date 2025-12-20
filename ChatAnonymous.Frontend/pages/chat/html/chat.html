@@ -24,10 +24,15 @@
             <div class="chat-actions">
                 <button id="copyBtn" class="action-btn" onclick="copiarLink()">Copiar Link</button>
                 <button class="action-btn danger" onclick="sairSala()">Sair</button>
-            </div>
+            </div>         
         </div>
 
-        <div class="messages-area" id="messages"></div>
+        <div class="messages-area" id="messages">
+            <div id="emojiPicker" class="emoji-picker-div">
+            <emoji-picker></emoji-picker>
+        </div>
+
+        </div>
 
         <div class="input-area">
             <input 
@@ -36,6 +41,8 @@
                 id="messageInput"
                 placeholder="Digite sua mensagem..."
             >
+            
+            <button class="buttonEmojiPicker" type="button" onclick="showEmojiPicker()"><img src="../../../images/emojiPicker.png" alt="" srcset=""></button>
             <button class="send-btn" onclick="enviarMensagem()">Enviar</button>
         </div>
     </div>
@@ -103,5 +110,6 @@
     </div>
 </div>
 <script src="../js/chat.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 </body>
 </html>
