@@ -608,14 +608,15 @@ body {
 
 .emoji-picker-div {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 12%;
+    right: 4%;
 
     opacity: 0;
     transform: translateY(15px);
     pointer-events: none;
 
     transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 9999;
 }
 
 .emoji-picker-div.show {
@@ -623,6 +624,7 @@ body {
     transform: translateY(0);
     pointer-events: auto;
 }
+
 
 emoji-picker {
   --num-columns: 6;
@@ -739,9 +741,12 @@ emoji-picker {
         padding: 12px;
     }
 
-     emoji-picker {
-        --num-columns: 6;
-        --category-emoji-size: 1.125rem;
+    emoji-picker {
+        display: none;
+    }
+
+    .buttonEmojiPicker{
+        display: none;
     }
 }
 
@@ -752,9 +757,14 @@ emoji-picker {
         padding: 12px;
     }
 
+     emoji-picker {
+        --num-columns: 6;
+        --category-emoji-size: 1rem;
+    }
+
     .buttonEmojiPicker img {
-        width: 30px;
-        height: 30px;
+        width: 10px;
+        height: 10px;
     }
 
     .chat-title {
@@ -780,22 +790,8 @@ emoji-picker {
     }
 
     .send-btn {
-        padding: 5px 8px;
+        padding: 10px 14px;
         font-size: 13px;
-        width: 60px;
-    }
-}
-
-@media (max-width: 380px){
-     emoji-picker {
-        --num-columns: 6;
-        --num-lines: 3;
-        --category-emoji-size: 1rem;
-    }
-
-    .emoji-picker-div {
-        bottom: 6px;
-        right: 6px;
     }
 }
 
