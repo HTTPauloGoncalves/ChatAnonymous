@@ -595,6 +595,44 @@ body {
     background: #db2777;
 }
 
+.buttonEmojiPicker {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.buttonEmojiPicker img {
+    width: 40px;
+    height: 40px;
+}
+
+.emoji-picker-div {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+
+    opacity: 0;
+    transform: translateY(15px);
+    pointer-events: none;
+
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.emoji-picker-div.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+emoji-picker {
+  --num-columns: 6;
+  --background: #923be4;
+  --border-radius: 10px;
+}
+
+.buttonEmojiPicker img:hover {
+    transform: translateY(-2px);
+}
 
 /* ================================
    RESPONSIVIDADE APRIMORADA
@@ -700,6 +738,11 @@ body {
         width: 100%;
         padding: 12px;
     }
+
+     emoji-picker {
+        --num-columns: 6;
+        --category-emoji-size: 1.125rem;
+    }
 }
 
 
@@ -707,6 +750,11 @@ body {
 
     .chat-header {
         padding: 12px;
+    }
+
+    .buttonEmojiPicker img {
+        width: 30px;
+        height: 30px;
     }
 
     .chat-title {
@@ -732,8 +780,22 @@ body {
     }
 
     .send-btn {
-        padding: 10px 14px;
+        padding: 5px 8px;
         font-size: 13px;
+        width: 60px;
+    }
+}
+
+@media (max-width: 380px){
+     emoji-picker {
+        --num-columns: 6;
+        --num-lines: 3;
+        --category-emoji-size: 1rem;
+    }
+
+    .emoji-picker-div {
+        bottom: 6px;
+        right: 6px;
     }
 }
 

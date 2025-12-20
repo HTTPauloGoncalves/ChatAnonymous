@@ -87,9 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 };
 
-document.querySelector('emoji-picker')
-        .addEventListener('emoji-click', event => document.getElementById("messageInput").value += event.detail.emoji.unicode);
-
+    document.querySelector('emoji-picker')
+            .addEventListener('emoji-click', event => document.getElementById("messageInput").value += event.detail.emoji.unicode);
 
     document.getElementById("messageInput").addEventListener("keypress", e => {
         if (e.key === "Enter") enviarMensagem();
@@ -353,3 +352,13 @@ function confirmarRandom(){
     window.location.href = "/ChatAnonymous.Frontend/pages/chat/html/chat.html?random=true";
 }
 
+function showEmojiPicker() {
+    const picker = document.getElementById("emojiPicker");
+
+    if (!picker) {
+        console.error("emojiPicker não encontrado");
+        return;
+    }
+
+    picker.classList.toggle("show");
+}
